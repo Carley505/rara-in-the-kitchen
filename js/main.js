@@ -406,15 +406,26 @@ function initMobileNav() {
   const nav    = document.getElementById('nav-links');
   if (!toggle || !nav) return;
 
+  // Create or get mobile nav backdrop
+  let backdrop = document.getElementById('mobile-nav-backdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.id = 'mobile-nav-backdrop';
+    backdrop.className = 'mobile-nav-backdrop';
+    document.body.appendChild(backdrop);
+  }
+
   function toggleMenu() {
     const isOpen = nav.classList.toggle('open');
     toggle.classList.toggle('active', isOpen);
+    backdrop.classList.toggle('open', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
   }
 
   function closeMenu() {
     nav.classList.remove('open');
     toggle.classList.remove('active');
+    backdrop.classList.remove('open');
     document.body.style.overflow = '';
   }
 
@@ -422,6 +433,8 @@ function initMobileNav() {
     e.stopPropagation();
     toggleMenu();
   });
+
+  backdrop.addEventListener('click', closeMenu);
 
   // Auto-close menu when any nav link is tapped
   nav.querySelectorAll('.nav-link').forEach(link => {
