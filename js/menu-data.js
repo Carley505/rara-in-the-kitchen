@@ -4,10 +4,10 @@
  */
 
 const MENU_CATEGORIES = [
-  { id: 'specials', name: 'Showcase Specials', label: 'Couture & Custom Cakes' },
-  { id: 'cakes-1kg', name: '1kg Signature Cakes', label: 'Artisanal Layer Cakes' },
-  { id: 'cupcakes', name: 'Cupcake Boxes', label: '12 pcs per box' },
-  { id: 'cookies-treats', name: 'Cookies, Treats & Shots', label: 'Brownies, Shots & Cheesecakes' }
+  { id: 'specials', name: 'Specials', label: 'Couture & Custom Cakes' },
+  { id: 'cakes-1kg', name: '1kg Cakes', label: 'Artisanal Layer Cakes' },
+  { id: 'cupcakes', name: 'Cupcakes', label: '12 pcs per box' },
+  { id: 'cookies-treats', name: 'Treats', label: 'Brownies, Shots & Cheesecakes' }
 ];
 
 const MENU_ITEMS = [

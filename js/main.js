@@ -31,18 +31,28 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ==========================================================================
    1. Menu Rendering & Category Filtering  (index.html only)
    ========================================================================== */
+let categoryExpandedState = {};
+
 function initMenuTabs() {
   const tabs = document.querySelectorAll('.tab-btn');
   tabs.forEach(tab => {
     tab.addEventListener('click', (e) => {
       tabs.forEach(t => t.classList.remove('active'));
       e.target.classList.add('active');
-      renderMenu(e.target.getAttribute('data-category'));
+      const cat = e.target.getAttribute('data-category');
+      renderMenu(cat);
     });
+  });
+
+  window.addEventListener('resize', () => {
+    const activeTab = document.querySelector('.tab-btn.active');
+    if (activeTab) {
+      renderMenu(activeTab.getAttribute('data-category'));
+    }
   });
 }
 
-function renderMenu(categoryId) {
+function renderMenu(categoryId, forceExpand = null) {
   const grid = document.getElementById('menu-grid');
   if (!grid) return;
 
@@ -55,7 +65,15 @@ function renderMenu(categoryId) {
     return;
   }
 
-  grid.innerHTML = items.map(item => {
+  if (forceExpand !== null) {
+    categoryExpandedState[categoryId] = forceExpand;
+  }
+  const isMobile = window.innerWidth <= 768;
+  const isExpanded = categoryExpandedState[categoryId] || false;
+  const shouldLimit = isMobile && !isExpanded && items.length > 4;
+  const visibleItems = shouldLimit ? items.slice(0, 4) : items;
+
+  const cardsHtml = visibleItems.map(item => {
     const priceDisplay = item.price
       ? `KES ${item.price.toLocaleString()}`
       : 'Price on Order';
@@ -95,6 +113,38 @@ function renderMenu(categoryId) {
       </div>
     `;
   }).join('');
+
+  let showMoreBtnHtml = '';
+  if (isMobile && items.length > 4) {
+    const remainingCount = items.length - 4;
+    if (shouldLimit) {
+      showMoreBtnHtml = `
+        <div style="grid-column: 1 / -1; text-align: center; margin-top: 1rem; width: 100%;">
+          <button class="btn btn-gilt show-more-menu-btn" style="width:100%; min-height:48px;" onclick="toggleCategoryExpand('${categoryId}', true)">
+            <span>✨ Show More (${remainingCount} more items)</span>
+          </button>
+        </div>
+      `;
+    } else {
+      showMoreBtnHtml = `
+        <div style="grid-column: 1 / -1; text-align: center; margin-top: 1rem; width: 100%;">
+          <button class="btn btn-gilt show-more-menu-btn" style="width:100%; min-height:48px;" onclick="toggleCategoryExpand('${categoryId}', false)">
+            <span>⬆️ Show Less</span>
+          </button>
+        </div>
+      `;
+    }
+  }
+
+  grid.innerHTML = cardsHtml + showMoreBtnHtml;
+}
+
+function toggleCategoryExpand(categoryId, expand) {
+  categoryExpandedState[categoryId] = expand;
+  renderMenu(categoryId);
+  if (!expand) {
+    document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 /* ==========================================================================

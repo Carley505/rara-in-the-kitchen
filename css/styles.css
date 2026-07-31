@@ -1616,19 +1616,17 @@ h1, h2, h3, h4, .font-serif {
   }
 
   .brand-tag {
-    font-size: 0.58rem;
+    display: none;
   }
 
-  /* Keep compact CTA action on mobile header */
   .header-actions {
-    display: flex;
+    display: none;
   }
 
-  .header-actions .btn {
-    padding: 0.45rem 0.85rem;
-    font-size: 0.78rem;
-    border-radius: 50px;
-    min-height: 38px;
+  .mobile-nav-toggle {
+    display: flex;
+    margin-left: auto;
+    flex-shrink: 0;
   }
 
   .nav-links {
