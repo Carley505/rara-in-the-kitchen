@@ -354,7 +354,36 @@ function showToast(message) {
 function initMobileNav() {
   const toggle = document.getElementById('mobile-nav-toggle');
   const nav    = document.getElementById('nav-links');
-  if (toggle && nav) {
-    toggle.addEventListener('click', () => nav.classList.toggle('open'));
+  if (!toggle || !nav) return;
+
+  function toggleMenu() {
+    const isOpen = nav.classList.toggle('open');
+    toggle.classList.toggle('active', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
   }
+
+  function closeMenu() {
+    nav.classList.remove('open');
+    toggle.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMenu();
+  });
+
+  // Auto-close menu when any nav link is tapped
+  nav.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      closeMenu();
+    });
+  });
+
+  // Close when pressing Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('open')) {
+      closeMenu();
+    }
+  });
 }
