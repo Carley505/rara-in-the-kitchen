@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%">
+  <defs>
+    <!-- Gold gradient matching original logo -->
+    <linearGradient id="gilt-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD561"/>
+      <stop offset="50%" stop-color="#E2B43B"/>
+      <stop offset="100%" stop-color="#B88A22"/>
+    </linearGradient>
+
+    <!-- Hot pink gradient matching original logo icing -->
+    <linearGradient id="pink-swirl-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF1A8C"/>
+      <stop offset="100%" stop-color="#E5006A"/>
+    </linearGradient>
+
+    <filter id="subtle-glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#EC1876" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="600" fill="#000000"/>
+
+  <!-- Hot Pink Piped Icing Swirl -->
+  <g filter="url(#subtle-glow)">
+    <!-- Main Icing Swirl Silhouette -->
+    <path d="M 315 88 
+             C 325 105, 360 135, 345 160 
+             C 330 180, 270 160, 230 180 
+             C 190 200, 180 235, 210 250 
+             C 240 265, 340 255, 395 240 
+             C 425 230, 430 200, 390 190 
+             C 350 180, 310 190, 275 195 
+             C 240 200, 230 215, 255 220 
+             C 280 225, 370 210, 400 180 
+             C 425 155, 380 115, 340 100 Z" 
+          fill="url(#pink-swirl-grad)"/>
+    
+    <!-- Top Flame / Swirl Crest -->
+    <path d="M 318 85 C 322 75, 320 60, 316 50 C 314 45, 312 40, 315 35 C 318 30, 325 38, 330 45 C 340 60, 352 75, 365 88 C 345 88, 330 85, 318 85 Z" fill="#FF1A8C"/>
+    
+    <!-- Smooth Icing Base Swoosh -->
+    <path d="M 195 245 C 230 280, 340 275, 410 235 C 430 220, 390 205, 330 225 C 270 245, 210 230, 195 245 Z" fill="url(#pink-swirl-grad)"/>
+  </g>
+
+  <!-- Crown Silhouette (White) -->
+  <g fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round">
+    <!-- Crown Base Arc -->
+    <path d="M 235 348 C 300 362, 350 362, 415 348 L 400 362 C 340 375, 300 375, 250 362 Z" />
+    
+    <!-- Crown Body & 3 Spikes -->
+    <path d="M 230 285 L 255 350 C 300 360, 350 360, 395 350 L 420 285 L 380 320 L 325 245 L 270 320 Z" />
+
+    <!-- Crown Jewels (Spheres) -->
+    <circle cx="228" cy="280" r="14" />
+    <circle cx="325" cy="240" r="16" />
+    <circle cx="422" cy="280" r="14" />
+
+    <!-- Diamond Cutouts in Crown (Black cutout) -->
+    <polygon points="325,270 338,295 325,320 312,295" fill="#000000" stroke="#000000"/>
+    <polygon points="275,305 284,320 275,335 266,320" fill="#000000" stroke="#000000"/>
+    <polygon points="375,305 384,320 375,335 366,320" fill="#000000" stroke="#000000"/>
+  </g>
+
+  <!-- Gold Script RaRa -->
+  <text x="325" y="445" font-family="'Fraunces', 'Georgia', serif" font-weight="700" font-size="82" font-style="italic" fill="url(#gilt-gold-grad)" text-anchor="middle" letter-spacing="-1">RaRa</text>
+
+  <!-- Gold Sans-serif "in the Kitchen" -->
+  <text x="325" y="495" font-family="'Inter', 'Helvetica Neue', sans-serif" font-weight="500" font-size="28" fill="url(#gilt-gold-grad)" text-anchor="middle" letter-spacing="4">in the Kitchen</text>
+
+  <!-- Hot Pink Tagline -->
+  <text x="325" y="550" font-family="'Inter', 'Helvetica Neue', sans-serif" font-weight="600" font-size="21" fill="#FF1A8C" text-anchor="middle" letter-spacing="0.5">You’ve tried the REST, Now try the BEST!</text>
+</svg>
