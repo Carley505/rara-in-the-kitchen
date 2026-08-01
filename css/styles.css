@@ -807,82 +807,157 @@ h1, h2, h3, h4, .font-serif {
   box-shadow: var(--shadow-pink-glow);
 }
 
-/* Floating Order Tray Bar */
+/* ==========================================================================
+   Menu Card Stepper & Quantity Control
+   ========================================================================== */
+.menu-card-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #FFFFFF;
+  border: 1.5px solid #8E6A1B;
+  border-radius: 50px;
+  padding: 0.25rem 0.65rem;
+  box-shadow: 0 2px 8px rgba(142, 106, 27, 0.12);
+}
+
+.menu-card-stepper .qty-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: transparent;
+  color: #2D1F24;
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.menu-card-stepper .qty-btn:active,
+.menu-card-stepper .qty-btn:hover {
+  background: rgba(142, 106, 27, 0.12);
+  color: #7A5B1E;
+}
+
+.menu-card-stepper .qty-num {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #2D1F24;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   Chef Royale Style Fixed Bottom Order Tray Bar
+   ========================================================================== */
 .order-tray-bar {
   position: fixed;
-  bottom: 1.75rem;
-  left: 50%;
-  transform: translateX(-50%) translateY(140%);
-  width: calc(100% - 3rem);
-  max-width: 880px;
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(184, 154, 90, 0.20);
-  border-left: 5px solid var(--blush);
-  border-radius: var(--radius-xl);
-  padding: 1.1rem 2rem;
-  box-shadow: 0 12px 40px rgba(45, 31, 36, 0.12), 0 0 20px rgba(200, 61, 104, 0.08);
-  z-index: 95;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 70px;
+  background: #1C1317;
+  border-top: 1.5px solid rgba(184, 154, 90, 0.35);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.35);
+  z-index: 170;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
-  transition: transform var(--transition-smooth);
+  padding: 0 1.25rem;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
 }
 
 .order-tray-bar.visible {
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(0);
 }
 
 .order-tray-info {
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: 0.85rem;
 }
 
-.order-count-badge {
-  background: linear-gradient(135deg, #D4567C, #C83D68);
-  color: #FFFFFF;
-  font-weight: 800;
-  font-size: 1rem;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+.cart-icon-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-pink-glow);
+  font-size: 1.6rem;
+}
+
+.order-count-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: linear-gradient(135deg, #E27B9B, #C83D68);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 0.72rem;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #1C1317;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .order-summary-text h5 {
-  font-size: 1.05rem;
-  color: var(--cocoa);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #D4B96A;
+  line-height: 1.2;
+  margin: 0;
 }
 
 .order-summary-text p {
-  font-size: 0.82rem;
-  color: var(--gilt-light);
+  font-size: 0.78rem;
+  color: rgba(250, 246, 240, 0.72);
+  margin: 0;
 }
 
-.view-tray-items-btn {
-  color: var(--gilt-light);
-  font-size: 0.88rem;
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+.btn-view-order {
+  background: linear-gradient(135deg, #D4B96A 0%, #B89A5A 50%, #9A7E42 100%);
+  color: #1C1317;
+  font-weight: 800;
+  font-size: 0.9rem;
+  padding: 0.65rem 1.35rem;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 4px 15px rgba(184, 154, 90, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Drawer Modal */
+.btn-view-order:hover, .btn-view-order:active {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(184, 154, 90, 0.45);
+}
+
+/* ==========================================================================
+   Chef Royale Style Bottom Sheet Order Drawer Modal
+   ========================================================================== */
 .order-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(45, 31, 36, 0.35);
-  backdrop-filter: blur(8px);
-  z-index: 120;
+  background: rgba(28, 19, 23, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 180;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--transition-fast);
+  touch-action: none;
+  overscroll-behavior: none;
+  transition: opacity 0.35s ease;
 }
 
 .order-modal-backdrop.open {
@@ -892,92 +967,225 @@ h1, h2, h3, h4, .font-serif {
 
 .order-drawer {
   position: fixed;
-  top: 0;
-  right: 0;
   bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 100%);
   width: 100%;
-  max-width: 480px;
+  max-width: 520px;
+  height: auto;
+  max-height: 88vh;
   background: #FAF6F0;
-  border-left: 1px solid rgba(184, 154, 90, 0.20);
-  z-index: 130;
+  border-radius: 24px 24px 0 0;
+  border: 1px solid rgba(184, 154, 90, 0.25);
+  border-bottom: 0;
+  z-index: 190;
   display: flex;
   flex-direction: column;
-  transform: translateX(100%);
-  transition: transform var(--transition-smooth);
-  box-shadow: -15px 0 40px rgba(45, 31, 36, 0.10);
+  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.30);
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease;
+  overscroll-behavior: contain;
 }
 
 .order-drawer.open {
-  transform: translateX(0);
+  transform: translate(-50%, 0);
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .drawer-header {
-  padding: 1.75rem;
-  background: #2D1F24;
-  border-bottom: 1px solid rgba(184, 154, 90, 0.20);
+  padding: 1.35rem 1.5rem;
+  background: #FFFFFF;
+  border-bottom: 1px solid rgba(184, 154, 90, 0.18);
+  border-radius: 24px 24px 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .drawer-header h3 {
-  font-size: 1.5rem;
-  color: #FAF6F0;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #2D1F24;
+  margin: 0;
+}
+
+.drawer-header-sub {
+  font-size: 0.8rem;
+  color: var(--whisper);
+  margin-top: 2px;
 }
 
 .drawer-close-btn {
-  color: #D4C5BC;
-  font-size: 2rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(45, 31, 36, 0.06);
+  color: #5C4D47;
+  font-size: 1.5rem;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.drawer-close-btn:hover {
+  background: rgba(200, 61, 104, 0.12);
+  color: var(--blush);
 }
 
 .drawer-body {
-  padding: 1.75rem;
+  padding: 1.25rem 1.25rem 0.5rem;
   overflow-y: auto;
   flex-grow: 1;
+  -webkit-overflow-scrolling: touch;
 }
 
 .cart-items-list {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1rem;
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.cart-item-row {
+.cart-item-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 1.1rem;
+  border: 1px solid rgba(184, 154, 90, 0.20);
+  box-shadow: 0 4px 15px rgba(45, 31, 36, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.cart-item-top {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.cart-item-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(184, 154, 90, 0.2);
+}
+
+.cart-item-details {
+  flex-grow: 1;
+}
+
+.cart-item-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #2D1F24;
+  margin-bottom: 2px;
+}
+
+.cart-item-unit-price {
+  font-size: 0.82rem;
+  color: var(--whisper);
+}
+
+.cart-item-remove-btn {
+  background: none;
+  border: none;
+  color: #C83D68;
+  font-size: 1.15rem;
+  padding: 0.35rem;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.cart-item-remove-btn:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.cart-item-bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(35, 26, 30, 0.08);
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(45, 31, 36, 0.06);
 }
 
-.cart-item-info h6 {
-  font-size: 1rem;
-  color: var(--cocoa);
-  margin-bottom: 0.2rem;
+.cart-stepper {
+  background: #FAF6F0;
+  border-color: rgba(184, 154, 90, 0.3);
 }
 
-.cart-item-info p {
-  font-size: 0.82rem;
-  color: var(--blush-soft);
-}
-
-.cart-item-qty {
+.cart-item-subtotal {
+  font-size: 0.88rem;
+  color: var(--whisper);
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  background: rgba(35, 26, 30, 0.05);
-  border-radius: 50px;
-  padding: 0.3rem 0.7rem;
+  gap: 0.35rem;
 }
 
-.qty-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: rgba(35, 26, 30, 0.12);
-  color: var(--cocoa);
+.cart-item-subtotal strong {
+  font-size: 1.05rem;
+  color: #7A5B1E;
+  font-weight: 800;
+}
+
+.drawer-footer {
+  padding: 1.25rem 1.5rem 1.5rem;
+  background: #FFFFFF;
+  border-top: 1px solid rgba(184, 154, 90, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.drawer-subtotal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawer-subtotal span {
+  font-size: 1.02rem;
+  color: var(--whisper);
+  font-weight: 600;
+}
+
+.drawer-subtotal strong {
+  font-size: 1.45rem;
+  color: #7A5B1E;
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
+.btn-checkout-wa {
+  background: linear-gradient(135deg, #D4B96A 0%, #B89A5A 50%, #9A7E42 100%);
+  color: #2D1F24;
+  font-weight: 800;
+  font-size: 1.05rem;
+  padding: 1rem 1.5rem;
+  border-radius: 14px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 6px 20px rgba(184, 154, 90, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-checkout-wa:hover, .btn-checkout-wa:active {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(184, 154, 90, 0.5);
+}
   font-weight: 800;
   display: flex;
   align-items: center;

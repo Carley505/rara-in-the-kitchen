@@ -105,9 +105,17 @@ function renderMenu(categoryId, forceExpand = null) {
           <p class="menu-card-desc">${item.desc}</p>
           <div class="menu-card-footer">
             <span class="menu-unit-label">${item.unit || 'Per Unit'}</span>
-            <button class="add-to-order-btn" onclick="addToCart('${item.id}')">
-              <span>+ Add to Order</span>
-            </button>
+            ${cart[item.id] ? `
+              <div class="menu-card-stepper">
+                <button class="qty-btn" onclick="updateItemQty('${item.id}', -1)" aria-label="Decrease quantity">−</button>
+                <span class="qty-num">${cart[item.id].qty}</span>
+                <button class="qty-btn" onclick="updateItemQty('${item.id}', 1)" aria-label="Increase quantity">+</button>
+              </div>
+            ` : `
+              <button class="add-to-order-btn" onclick="addToCart('${item.id}')">
+                <span>🛒 Add to Cart</span>
+              </button>
+            `}
           </div>
         </div>
       </div>
@@ -181,7 +189,8 @@ function updateItemQty(itemId, delta) {
 function updateCartUI() {
   const trayBar      = document.getElementById('order-tray-bar');
   const countBadge   = document.getElementById('order-count-badge');
-  const summaryText  = document.getElementById('order-summary-text');
+  const trayPrice    = document.getElementById('tray-total-price');
+  const trayCount    = document.getElementById('tray-item-count');
   const cartList     = document.getElementById('cart-items-list');
   const drawerSub    = document.getElementById('drawer-subtotal-val');
 
@@ -198,40 +207,58 @@ function updateCartUI() {
     else hasUnpriced = true;
   });
 
-  const priceText = totalPrice > 0
-    ? `Estimated: KES ${totalPrice.toLocaleString()}${hasUnpriced ? ' + custom items' : ''}`
-    : 'Custom priced items selected';
-
-  if (summaryText) {
-    summaryText.innerHTML = `<h5>${totalCount} ${totalCount === 1 ? 'item' : 'items'} in your order</h5><p>${priceText}</p>`;
+  if (trayPrice) {
+    trayPrice.textContent = totalPrice > 0 ? `KES ${totalPrice.toLocaleString()}` : 'Custom Order';
+  }
+  if (trayCount) {
+    trayCount.textContent = `${totalCount} ${totalCount === 1 ? 'item' : 'items'} in order`;
   }
   if (drawerSub) {
     drawerSub.textContent = totalPrice > 0 ? `KES ${totalPrice.toLocaleString()}` : 'To confirm';
   }
 
-  // Drawer itemized list
+  // Drawer itemized list (Chef Royale style cards)
   if (cartList) {
     if (entries.length === 0) {
-      cartList.innerHTML = '<li style="text-align:center;color:var(--whisper);padding:2rem;">Your order tray is empty.</li>';
+      cartList.innerHTML = '<li style="text-align:center;color:var(--whisper);padding:2.5rem 1rem;">Your order tray is empty.</li>';
     } else {
       cartList.innerHTML = entries.map(e => {
-        const p = e.item.price
-          ? `KES ${(e.item.price * e.qty).toLocaleString()}`
-          : 'Price to confirm';
+        const unitPrice = e.item.price ? `KES ${e.item.price.toLocaleString()} each` : 'Custom priced';
+        const subtotal  = e.item.price ? `KES ${(e.item.price * e.qty).toLocaleString()}` : 'To confirm';
+        const imgSrc    = e.item.image || 'assets/images/logo/logo.jpg';
+
         return `
-          <li class="cart-item-row">
-            <div class="cart-item-info">
-              <h6>${e.item.name}</h6>
-              <p>${p}</p>
+          <li class="cart-item-card">
+            <div class="cart-item-top">
+              <img src="${imgSrc}" alt="${e.item.name}" class="cart-item-thumb">
+              <div class="cart-item-details">
+                <h6 class="cart-item-title">${e.item.name}</h6>
+                <p class="cart-item-unit-price">${unitPrice}</p>
+              </div>
+              <button class="cart-item-remove-btn" onclick="removeFromCart('${e.item.id}')" title="Remove item" aria-label="Remove item">
+                🗑️
+              </button>
             </div>
-            <div class="cart-item-qty">
-              <button class="qty-btn" onclick="updateItemQty('${e.item.id}',-1)">−</button>
-              <span class="qty-num">${e.qty}</span>
-              <button class="qty-btn" onclick="updateItemQty('${e.item.id}',1)">+</button>
+            <div class="cart-item-bottom">
+              <div class="menu-card-stepper cart-stepper">
+                <button class="qty-btn" onclick="updateItemQty('${e.item.id}', -1)" aria-label="Decrease quantity">−</button>
+                <span class="qty-num">${e.qty}</span>
+                <button class="qty-btn" onclick="updateItemQty('${e.item.id}', 1)" aria-label="Increase quantity">+</button>
+              </div>
+              <div class="cart-item-subtotal">
+                <span class="subtotal-label">Subtotal:</span>
+                <strong class="subtotal-val">${subtotal}</strong>
+              </div>
             </div>
           </li>`;
       }).join('');
     }
+  }
+
+  // Re-render menu card steppers synchronously
+  if (typeof activeCategory !== 'undefined' && activeCategory) {
+    const grid = document.getElementById('menu-grid');
+    if (grid) renderMenu(activeCategory);
   }
 }
 
@@ -250,11 +277,13 @@ function initCartEvents() {
 function openOrderDrawer() {
   document.getElementById('order-modal-backdrop')?.classList.add('open');
   document.getElementById('order-drawer')?.classList.add('open');
+  lockMobileBodyScroll();
 }
 
 function closeOrderDrawer() {
   document.getElementById('order-modal-backdrop')?.classList.remove('open');
   document.getElementById('order-drawer')?.classList.remove('open');
+  unlockMobileBodyScroll();
 }
 
 /* ==========================================================================
@@ -401,6 +430,30 @@ function showToast(message) {
   }, 3500);
 }
 
+let globalSavedScrollY = 0;
+
+function lockMobileBodyScroll() {
+  globalSavedScrollY = window.scrollY || window.pageYOffset;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${globalSavedScrollY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.width = '100%';
+  document.body.style.overflow = 'hidden';
+}
+
+function unlockMobileBodyScroll() {
+  if (document.body.style.position === 'fixed') {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    document.body.style.overflow = '';
+    window.scrollTo(0, globalSavedScrollY);
+  }
+}
+
 function initMobileNav() {
   const toggle = document.getElementById('mobile-nav-toggle');
   const nav    = document.getElementById('nav-links');
@@ -419,14 +472,20 @@ function initMobileNav() {
     const isOpen = nav.classList.toggle('open');
     toggle.classList.toggle('active', isOpen);
     backdrop.classList.toggle('open', isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
+    if (isOpen) {
+      lockMobileBodyScroll();
+    } else {
+      unlockMobileBodyScroll();
+    }
   }
 
   function closeMenu() {
-    nav.classList.remove('open');
-    toggle.classList.remove('active');
-    backdrop.classList.remove('open');
-    document.body.style.overflow = '';
+    if (nav.classList.contains('open')) {
+      nav.classList.remove('open');
+      toggle.classList.remove('active');
+      backdrop.classList.remove('open');
+      unlockMobileBodyScroll();
+    }
   }
 
   toggle.addEventListener('click', (e) => {

@@ -185,45 +185,50 @@
       </div>
     </section>
 
-    <!-- Floating Order Tray Bar (Mobile & Desktop) -->
+    <!-- Floating Order Tray Bar (Fixed Bottom Bar matching Chef Royale) -->
     <div class="order-tray-bar" id="order-tray-bar">
       <div class="order-tray-info">
-        <div class="order-count-badge" id="order-count-badge">0</div>
+        <div class="cart-icon-wrapper">
+          <span class="cart-icon">🛒</span>
+          <span class="order-count-badge" id="order-count-badge">0</span>
+        </div>
         <div class="order-summary-text" id="order-summary-text">
-          <h5>0 items in your order</h5>
-          <p>Estimated: KES 0</p>
+          <h5 id="tray-total-price">KES 0</h5>
+          <p id="tray-item-count">0 items in order</p>
         </div>
       </div>
 
       <div class="order-tray-actions">
-        <button class="view-tray-items-btn" id="view-tray-items-btn">Review List</button>
-        <button class="btn btn-blush" id="send-order-wa-btn">
-          <span>Send Order via WhatsApp 💬</span>
+        <button class="btn-view-order" id="view-tray-items-btn">
+          <span>View Order &rsaquo;</span>
         </button>
       </div>
     </div>
 
-    <!-- Order Drawer Modal -->
+    <!-- Order Drawer Modal (Bottom Sheet Modal matching Chef Royale) -->
     <div class="order-modal-backdrop" id="order-modal-backdrop"></div>
     <div class="order-drawer" id="order-drawer">
       <div class="drawer-header">
-        <h3>Your Selection</h3>
-        <button class="drawer-close-btn" id="drawer-close-btn">&times;</button>
+        <div>
+          <h3>Your Order 🎂</h3>
+          <p class="drawer-header-sub">RaRa In The Kitchen &bull; Nyali, Mombasa</p>
+        </div>
+        <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close Order Drawer">&times;</button>
       </div>
 
       <div class="drawer-body">
         <ul class="cart-items-list" id="cart-items-list">
-          <!-- Dynamically populated -->
+          <!-- Dynamically populated by js/main.js -->
         </ul>
       </div>
 
       <div class="drawer-footer">
         <div class="drawer-subtotal">
-          <span>Subtotal Estimate:</span>
+          <span>Total Amount</span>
           <strong id="drawer-subtotal-val">KES 0</strong>
         </div>
-        <button class="btn btn-blush" style="width:100%" onclick="sendOrderToWhatsApp()">
-          <span>Proceed to WhatsApp Checkout</span>
+        <button class="btn btn-checkout-wa" id="send-order-wa-btn">
+          <span>💬 Send Order via WhatsApp</span>
         </button>
       </div>
     </div>
