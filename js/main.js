@@ -435,6 +435,11 @@ function initMobileNav() {
   });
 
   backdrop.addEventListener('click', closeMenu);
+  backdrop.addEventListener('touchmove', (e) => {
+    if (backdrop.classList.contains('open')) {
+      e.preventDefault();
+    }
+  }, { passive: false });
 
   // Auto-close menu when any nav link is tapped
   nav.querySelectorAll('.nav-link').forEach(link => {
