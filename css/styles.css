@@ -957,10 +957,10 @@ h1, h2, h3, h4, .font-serif {
 .order-modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(28, 19, 23, 0.55);
+  background: rgba(28, 19, 23, 0.65);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  z-index: 180;
+  z-index: 300;
   opacity: 0;
   pointer-events: none;
   touch-action: none;
@@ -981,15 +981,16 @@ h1, h2, h3, h4, .font-serif {
   width: 100%;
   max-width: 520px;
   height: auto;
-  max-height: 88vh;
+  max-height: calc(100dvh - 84px);
+  max-height: calc(100vh - 84px);
   background: #FAF6F0;
   border-radius: 24px 24px 0 0;
-  border: 1px solid rgba(184, 154, 90, 0.25);
+  border: 1.5px solid rgba(184, 154, 90, 0.35);
   border-bottom: 0;
-  z-index: 190;
+  z-index: 310;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.30);
+  box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.35);
   visibility: hidden;
   pointer-events: none;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease;
@@ -1003,13 +1004,27 @@ h1, h2, h3, h4, .font-serif {
 }
 
 .drawer-header {
-  padding: 1.35rem 1.5rem;
+  padding: 0.85rem 1.5rem 1.25rem;
   background: #FFFFFF;
   border-bottom: 1px solid rgba(184, 154, 90, 0.18);
   border-radius: 24px 24px 0 0;
   display: flex;
+  flex-direction: column;
+}
+
+.drawer-drag-handle {
+  width: 42px;
+  height: 5px;
+  background: rgba(45, 31, 36, 0.20);
+  border-radius: 5px;
+  margin: 0 auto 0.85rem auto;
+}
+
+.drawer-header-main {
+  display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
 .drawer-header h3 {
@@ -2454,12 +2469,13 @@ h1, h2, h3, h4, .font-serif {
   .order-drawer {
     width: 100%;
     max-width: 100%;
-    max-height: 85vh;
-    border-radius: 20px 20px 0 0;
+    max-height: calc(100dvh - 84px);
+    max-height: calc(100vh - 84px);
+    border-radius: 22px 22px 0 0;
   }
 
   .drawer-header {
-    padding: 1.1rem 1.25rem;
+    padding: 0.75rem 1.25rem 1rem;
   }
 
   .drawer-header h3 {
