@@ -167,14 +167,14 @@ function addToCart(itemId) {
   } else {
     cart[itemId] = { item, qty: 1 };
   }
-  updateCartUI();
+  updateCartUI(itemId);
   showToast(`Added <strong>${item.name}</strong> to your order tray.`);
 }
 
 function removeFromCart(itemId) {
   if (cart[itemId]) {
     delete cart[itemId];
-    updateCartUI();
+    updateCartUI(itemId);
   }
 }
 
@@ -182,11 +182,40 @@ function updateItemQty(itemId, delta) {
   if (cart[itemId]) {
     cart[itemId].qty += delta;
     if (cart[itemId].qty <= 0) delete cart[itemId];
-    updateCartUI();
+    updateCartUI(itemId);
   }
 }
 
-function updateCartUI() {
+function updateSingleCardFooter(itemId) {
+  const card = document.querySelector(`.menu-card[data-id="${itemId}"]`);
+  if (!card) return;
+
+  const footer = card.querySelector('.menu-card-footer');
+  if (!footer) return;
+
+  const item = MENU_ITEMS.find(i => i.id === itemId);
+  const unitLabel = item ? (item.unit || 'Per Unit') : 'Per Unit';
+
+  if (cart[itemId] && cart[itemId].qty > 0) {
+    footer.innerHTML = `
+      <span class="menu-unit-label">${unitLabel}</span>
+      <div class="menu-card-stepper">
+        <button class="qty-btn" onclick="updateItemQty('${itemId}', -1)" aria-label="Decrease quantity">−</button>
+        <span class="qty-num">${cart[itemId].qty}</span>
+        <button class="qty-btn" onclick="updateItemQty('${itemId}', 1)" aria-label="Increase quantity">+</button>
+      </div>
+    `;
+  } else {
+    footer.innerHTML = `
+      <span class="menu-unit-label">${unitLabel}</span>
+      <button class="add-to-order-btn" onclick="addToCart('${itemId}')">
+        <span>🛒 Add to Cart</span>
+      </button>
+    `;
+  }
+}
+
+function updateCartUI(targetItemId) {
   const trayBar      = document.getElementById('order-tray-bar');
   const countBadge   = document.getElementById('order-count-badge');
   const trayPrice    = document.getElementById('tray-total-price');
@@ -255,10 +284,14 @@ function updateCartUI() {
     }
   }
 
-  // Re-render menu card steppers synchronously
-  if (typeof activeCategory !== 'undefined' && activeCategory) {
-    const grid = document.getElementById('menu-grid');
-    if (grid) renderMenu(activeCategory);
+  // Instant targeted DOM update for specific card or all cards in view
+  if (targetItemId) {
+    updateSingleCardFooter(targetItemId);
+  } else {
+    document.querySelectorAll('.menu-card[data-id]').forEach(c => {
+      const id = c.getAttribute('data-id');
+      if (id) updateSingleCardFooter(id);
+    });
   }
 }
 
